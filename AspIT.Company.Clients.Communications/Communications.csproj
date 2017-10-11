@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionHandler.cs" />
     <Compile Include="Enums\LoginResult.cs" />
     <Compile Include="LoginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
