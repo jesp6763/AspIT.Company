@@ -38,17 +38,18 @@ namespace AspIT.Company.Clients.WindowsDesktop.Gui
                 case LoginResult.Success:
                     ClientWindow clientWin = new ClientWindow();
                     clientWin.Show();
+
+                    // Hide login window
                     Hide();
-                    MessageBox.Show("Login successful!");
                     break;
                 case LoginResult.UserDoesNotExist:
-                    MessageBox.Show("User does not exist!");
+                    statusLbl.Content = "User does not exist!";
                     break;
                 case LoginResult.WrongUsernameOrPassword:
-                    MessageBox.Show("Wrong username or password!");
+                    statusLbl.Content = "Wrong username or password!";
                     break;
                 case LoginResult.ServerRefusedClient:
-                    MessageBox.Show("Client connection refused by server!");
+                    statusLbl.Content = "Client connection refused by server!";
                     break;
             }
         }
