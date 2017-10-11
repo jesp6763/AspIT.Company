@@ -4,6 +4,7 @@
     {
         Success,
         WrongUsernameOrPassword,
-        UserDoesNotExist
+        UserDoesNotExist,
+        ServerRefusedClient
     }
 }
