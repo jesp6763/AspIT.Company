@@ -1,0 +1,13 @@
+﻿<Window x:Class="AspIT.Company.Clients.WindowsDesktop.Gui.ClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AspIT.Company.Clients.WindowsDesktop.Gui"
+        xmlns:communications="clr-namespace:AspIT.Company.Clients.Communications;assembly=AspIT.Company.Clients.Communications"
+        mc:Ignorable="d"
+        Title="Client window" Height="300" Width="479.688" Background="#FF252525" Foreground="White" Closing="Window_Closing">
+    <Grid>
+        <Label x:Name="loggedInUser" Content="{Binding Source={x:Static communications:LoginHandler.CurrentUser}, Path=Username}" ContentStringFormat="Logged in as {0}" HorizontalAlignment="Left" Margin="10,233,0,0" VerticalAlignment="Top" Foreground="White"/>
+    </Grid>
+</Window>
