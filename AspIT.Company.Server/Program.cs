@@ -12,15 +12,16 @@ namespace AspIT.Company.Server
     {
         static void Main(string[] args)
         {
-            Server server = new Server("Test Server", new TcpListener(IPAddress.Parse("127.0.0.1"), 27013));
-            server.TcpListener.Start();
+            Server server = new Server("Test Server", IPAddress.Parse("127.0.0.1"), 27013);
+            server.Start();
             PrintServerInformation(server);
             Console.ReadKey();
         }
 
         private static void PrintServerInformation(Server server)
         {
-            Console.WriteLine($"Server ip: {server.TcpListener.LocalEndpoint}");
+            Console.WriteLine($"Server name: {server.Name}");
+            Console.WriteLine($"Server ip: {server.LocalEndpoint}");
         }
     }
 }
