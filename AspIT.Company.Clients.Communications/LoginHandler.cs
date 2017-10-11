@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using AspIT.Company.Common.Entities;
 using AspIT.Company.Clients.Communications.Enums;
 using AspIT.Company.Server.DataAccess.Repositories;
@@ -26,9 +27,15 @@ namespace AspIT.Company.Clients.Communications
             {
                 return LoginResult.UserDoesNotExist;
             }
-            else if(user.Password != dbUser.Password)
+
+            if(user.Password != dbUser.Password)
             {
                 return LoginResult.WrongUsernameOrPassword;
+            }
+
+            if (TestServerConnection() == "Refused")
+            {
+                return LoginResult.ServerRefusedClient;
             }
 
             User loggedInUser = new User(user.Username, user.Password, true);
@@ -45,6 +52,25 @@ namespace AspIT.Company.Clients.Communications
             UserRepository repository = new UserRepository();
             repository.Update(new User(CurrentUser.Username, CurrentUser.Password, false));
             CurrentUser = new User(string.Empty, string.Empty);
+        }
+
+        // TODO: Remove when done testing
+        private static string TestServerConnection()
+        {
+            try
+            {
+                TcpClient client = new TcpClient("127.0.0.1", 27013);
+                return "Success";
+            }
+            catch (Exception e)
+            {
+                if (e.GetType() == typeof(SocketException))
+                {
+                    return "Refused";
+                }
+
+                return "Unknown";
+            }
         }
     }
 }
