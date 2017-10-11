@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "AspIT.Company.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "AspIT.Company.Server.Services\Services.csproj", "{E81B8EF0-F8EE-4429-8001-A157E0623818}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "AspIT.Company.Server\Server.csproj", "{655E0D45-ADBA-4E41-908C-51D1CFAAF4D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{E81B8EF0-F8EE-4429-8001-A157E0623818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E81B8EF0-F8EE-4429-8001-A157E0623818}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E81B8EF0-F8EE-4429-8001-A157E0623818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655E0D45-ADBA-4E41-908C-51D1CFAAF4D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655E0D45-ADBA-4E41-908C-51D1CFAAF4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655E0D45-ADBA-4E41-908C-51D1CFAAF4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655E0D45-ADBA-4E41-908C-51D1CFAAF4D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{EC773BFC-585C-4F72-BE44-410F50ADE44C} = {76F36E66-73D0-4A62-BDE2-3AFB964D6B4C}
 		{6F1A6771-308E-4A8F-AAFA-43F6F7DED590} = {76F36E66-73D0-4A62-BDE2-3AFB964D6B4C}
 		{E81B8EF0-F8EE-4429-8001-A157E0623818} = {171D3717-B425-4A22-A0F6-5003F5E391E7}
+		{655E0D45-ADBA-4E41-908C-51D1CFAAF4D0} = {171D3717-B425-4A22-A0F6-5003F5E391E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {737A0DAC-D0F3-43CD-80EF-06C35A24E742}
