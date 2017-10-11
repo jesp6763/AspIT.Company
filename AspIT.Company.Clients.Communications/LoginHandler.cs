@@ -33,7 +33,7 @@ namespace AspIT.Company.Clients.Communications
                 return LoginResult.WrongUsernameOrPassword;
             }
 
-            if (TestServerConnection() == "Refused")
+            if (ConnectionHandler.TestServerConnection() == ConnectionResult.ConnectionRefused)
             {
                 return LoginResult.ServerRefusedClient;
             }
@@ -52,25 +52,6 @@ namespace AspIT.Company.Clients.Communications
             UserRepository repository = new UserRepository();
             repository.Update(new User(CurrentUser.Username, CurrentUser.Password, false));
             CurrentUser = new User(string.Empty, string.Empty);
-        }
-
-        // TODO: Remove when done testing
-        private static string TestServerConnection()
-        {
-            try
-            {
-                TcpClient client = new TcpClient("127.0.0.1", 27013);
-                return "Success";
-            }
-            catch (Exception e)
-            {
-                if (e.GetType() == typeof(SocketException))
-                {
-                    return "Refused";
-                }
-
-                return "Unknown";
-            }
         }
     }
 }
