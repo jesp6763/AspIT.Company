@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AspIT.Company.Clients.WindowsDesktop.Gui"
         mc:Ignorable="d"
-        Title="Login" Height="131.796" Width="260.536" Background="#FF252525" Foreground="White" FontFamily="Malgun Gothic Semilight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Login" Height="160.97" Width="260.536" Background="#FF252525" Foreground="White" FontFamily="Malgun Gothic Semilight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBox x:Name="usernameTb" Height="23" Margin="84,14,10,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLength="50"/>
         <Label Content="Username" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="69" Foreground="White"/>
         <Label Content="Password" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="69" Foreground="White"/>
-        <Button x:Name="loginBtn" Content="Login" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="58" BorderThickness="0" Background="#FF3697CF" Foreground="White" Height="25" Click="LoginBtn_Click"/>
+        <Button x:Name="loginBtn" Content="Login" HorizontalAlignment="Right" Margin="0,0,68,10" VerticalAlignment="Bottom" Width="106" BorderThickness="0" Background="#FF3697CF" Foreground="White" Height="25" Click="LoginBtn_Click"/>
         <PasswordBox x:Name="passwordBox" Margin="84,42,10,0" VerticalAlignment="Top" Height="20" MaxLength="255"/>
+        <Label x:Name="statusLbl" Content="" Margin="4,0,4,39" VerticalAlignment="Bottom" Foreground="White"/>
 
     </Grid>
 </Window>
