@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AspIT.Company.Clients.WindowsDesktop.Gui"
         mc:Ignorable="d"
-        Title="Login" Height="131.796" Width="260.536" Background="#FF252525" Foreground="White" FontFamily="Malgun Gothic Semilight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closed="Window_Closing">
+        Title="Login" Height="131.796" Width="260.536" Background="#FF252525" Foreground="White" FontFamily="Malgun Gothic Semilight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBox x:Name="usernameTb" Height="23" Margin="84,14,10,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLength="50"/>
         <Label Content="Username" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="69" Foreground="White"/>
