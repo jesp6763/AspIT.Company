@@ -1,13 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using AspIT.Company.Clients.Communications.Enums;
 
 namespace AspIT.Company.Clients.Communications
 {
-    public class ConnectionHandler
+    public static class ConnectionHandler
     {
+        public static ConnectionResult TestServerConnection()
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient("127.0.0.1", 27013))
+                {
+                    return ConnectionResult.ConnectionSuccess;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.GetType() == typeof(SocketException))
+                {
+                    return ConnectionResult.ConnectionRefused;
+                }
 
+                return ConnectionResult.UnknownError;
+            }
+        }
     }
 }
