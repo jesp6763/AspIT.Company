@@ -36,7 +36,6 @@ namespace AspIT.Company.Clients.WindowsDesktop.Gui
             switch(result)
             {
                 case LoginResult.Success:
-                    // open new window
                     ClientWindow clientWin = new ClientWindow();
                     clientWin.Show();
                     Hide();
