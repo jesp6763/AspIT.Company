@@ -28,6 +28,12 @@ namespace AspIT.Company.Clients.WindowsDesktop.Gui
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             LoginHandler.Logout();
+            Application.Current.MainWindow.Show();
+        }
+
+        private void LogoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
