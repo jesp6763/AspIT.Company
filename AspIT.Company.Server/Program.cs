@@ -12,8 +12,7 @@ namespace AspIT.Company.Server
     {
         static void Main(string[] args)
         {
-            Server server = new Server("Test Server", IPAddress.Parse("127.0.0.1"), 27013);
-            server.Start();
+            Server server = new Server("Test Server", IPAddress.Parse("127.0.0.1"), 27013, true);
             PrintServerInformation(server);
             Console.ReadKey();
         }
