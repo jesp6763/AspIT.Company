@@ -5,6 +5,7 @@
         Success,
         WrongUsernameOrPassword,
         UserDoesNotExist,
+        UserAlreadyLoggedIn,
         ServerRefusedClient
     }
 }

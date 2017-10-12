@@ -38,6 +38,11 @@ namespace AspIT.Company.Clients.Communications
                 return LoginResult.ServerRefusedClient;
             }
 
+            if(dbUser.IsLoggedIn)
+            {
+                return LoginResult.UserAlreadyLoggedIn;
+            }
+
             dbUser.IsLoggedIn = true;
             CurrentUser = dbUser;
             repository.Update(CurrentUser);
