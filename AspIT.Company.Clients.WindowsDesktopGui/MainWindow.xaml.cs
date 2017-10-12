@@ -51,6 +51,9 @@ namespace AspIT.Company.Clients.WindowsDesktop.Gui
                 case LoginResult.ServerRefusedClient:
                     statusLbl.Content = "Client connection refused by server!";
                     break;
+                case LoginResult.UserAlreadyLoggedIn:
+                    statusLbl.Content = "User is already logged in. Please try again later";
+                    break;
             }
         }
     }
