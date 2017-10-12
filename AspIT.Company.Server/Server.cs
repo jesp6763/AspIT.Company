@@ -74,5 +74,8 @@ namespace AspIT.Company.Server
         /// </summary>
         public string Name { get; set; }
         #endregion
+
+        #region Methods
+        #endregion
     }
 }
