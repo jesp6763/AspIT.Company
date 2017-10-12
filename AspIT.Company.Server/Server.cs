@@ -23,9 +23,39 @@ namespace AspIT.Company.Server
         /// Initializes a new instance of the Server class
         /// </summary>
         /// <param name="name">The name of the server. This is only for display</param>
+        /// <param name="autoStart">Start server automatically</param>
+        public Server(string name, IPEndPoint localEP, bool autoStart) : base(localEP)
+        {
+            Name = name;
+
+            if(autoStart)
+            {
+                Start();
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Server class
+        /// </summary>
+        /// <param name="name">The name of the server. This is only for display</param>
         public Server(string name, IPAddress localaddr, int port) : base(localaddr, port)
         {
             Name = name;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Server class
+        /// </summary>
+        /// <param name="name">The name of the server. This is only for display</param>
+        /// <param name="autoStart">Start server automatically</param>
+        public Server(string name, IPAddress localaddr, int port, bool autoStart) : base(localaddr, port)
+        {
+            Name = name;
+
+            if(autoStart)
+            {
+                Start();
+            }
         }
 
         /// <summary>
