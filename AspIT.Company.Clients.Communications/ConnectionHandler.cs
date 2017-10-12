@@ -13,7 +13,7 @@ namespace AspIT.Company.Clients.Communications
         {
             try
             {
-                using (TcpClient client = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27013)))
+                using (TcpClient client = new TcpClient("127.0.0.1", 27013))
                 {
                     return ConnectionResult.ConnectionSuccess;
                 }
