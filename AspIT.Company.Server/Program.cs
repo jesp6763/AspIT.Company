@@ -22,8 +22,6 @@ namespace AspIT.Company.Server
             //Enter the listening loop
             while(true)
             {
-                Console.WriteLine("Waiting for a connection... ");
-
                 // Perform a blocking call to accept requests.
                 // You could also user server.AcceptSocket() here.
                 TcpClient client = server.AcceptTcpClient();
