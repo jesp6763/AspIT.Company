@@ -10,6 +10,15 @@ namespace AspIT.Company.Server
 {
     public class Server : TcpListener
     {
+        #region Events
+        public event EventHandler ClientConnected;
+        protected virtual void OnClientConnected(EventArgs args)
+        {
+            ClientConnected?.Invoke(this, args);
+        }
+        #endregion
+
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the Server class
         /// </summary>
@@ -57,10 +66,13 @@ namespace AspIT.Company.Server
                 Start();
             }
         }
+        #endregion
 
+        #region Properties
         /// <summary>
         /// Gets or sets the display name of the server
         /// </summary>
         public string Name { get; set; }
+        #endregion
     }
 }
