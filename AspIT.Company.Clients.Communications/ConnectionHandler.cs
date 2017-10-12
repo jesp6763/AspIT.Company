@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using AspIT.Company.Clients.Communications.Enums;
 
 namespace AspIT.Company.Clients.Communications
@@ -14,19 +13,15 @@ namespace AspIT.Company.Clients.Communications
         {
             try
             {
-                using (TcpClient client = new TcpClient("127.0.0.1", 27013))
+                using (TcpClient client = new TcpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 27013)))
                 {
                     return ConnectionResult.ConnectionSuccess;
                 }
             }
-            catch (Exception e)
+            catch (Exception e) when (e.GetType() == typeof(SocketException))
             {
-                if (e.GetType() == typeof(SocketException))
-                {
-                    return ConnectionResult.ConnectionRefused;
-                }
-
-                return ConnectionResult.UnknownError;
+                return ConnectionResult.ConnectionRefused;
+                //return ConnectionResult.UnknownError;
             }
         }
     }
