@@ -13,7 +13,7 @@ namespace AspIT.Company.Server.DataAccess.Repositories
         /// <returns></returns>
         public User Find(User user)
         {
-            User result = null;
+            User result = user;
             DataSet dataSet = executor.Execute($"SELECT * FROM dbo.Users WHERE Username='{user.Username}'");
             if(dataSet.Tables.Count > 0)
             {
@@ -21,7 +21,9 @@ namespace AspIT.Company.Server.DataAccess.Repositories
                 if(table.Rows.Count > 0)
                 {
                     DataRow row = table.Rows[0];
-                    result = new User(row.Field<string>("Username"), row.Field<string>("Password"));
+                    user.Username = row.Field<string>("Username");
+                    user.Password = row.Field<string>("Password");
+                    user.IsLoggedIn = row.Field<bool>("IsLoggedIn");
                 }
             }
 
