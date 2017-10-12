@@ -11,11 +11,11 @@ namespace AspIT.Company.Common.Entities
         /// <summary>
         /// Gets or sets the username
         /// </summary>
-        public string Username { get; }
+        public string Username { get; set; }
         /// <summary>
         /// Gets or sets the password
         /// </summary>
-        public string Password { get; }
+        public string Password { get; set; }
         /// <summary>
         /// Gets or sets the logged in state
         /// </summary>
