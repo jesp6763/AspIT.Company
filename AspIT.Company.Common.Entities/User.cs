@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AspIT.Company.Common.Entities
 {
-    public struct User
+    public class User
     {
         /// <summary>
         /// Gets or sets the username
@@ -26,7 +26,6 @@ namespace AspIT.Company.Common.Entities
         {
             Username = username;
             Password = password;
-            IsLoggedIn = false;
         }
 
         public User(string username, string password, bool isLoggedIn) : this(username,password)
