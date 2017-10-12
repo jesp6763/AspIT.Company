@@ -13,7 +13,7 @@ namespace AspIT.Company.Server.DataAccess.Repositories
         /// <returns></returns>
         public User Find(User user)
         {
-            User result = new User(string.Empty, string.Empty);
+            User result = null;
             DataSet dataSet = executor.Execute($"SELECT * FROM dbo.Users WHERE Username='{user.Username}'");
             if(dataSet.Tables.Count > 0)
             {

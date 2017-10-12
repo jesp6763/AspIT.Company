@@ -23,7 +23,7 @@ namespace AspIT.Company.Clients.Communications
             UserRepository repository = new UserRepository();
             User dbUser = repository.Find(user);
 
-            if(dbUser.Username == string.Empty)
+            if(dbUser == null)
             {
                 return LoginResult.UserDoesNotExist;
             }
@@ -38,9 +38,9 @@ namespace AspIT.Company.Clients.Communications
                 return LoginResult.ServerRefusedClient;
             }
 
-            User loggedInUser = new User(user.Username, user.Password, true);
-            repository.Update(loggedInUser);
-            CurrentUser = loggedInUser;
+            dbUser.IsLoggedIn = true;
+            CurrentUser = dbUser;
+            repository.Update(CurrentUser);
             return LoginResult.Success;
         }
 
@@ -50,8 +50,9 @@ namespace AspIT.Company.Clients.Communications
         public static void Logout()
         {
             UserRepository repository = new UserRepository();
-            repository.Update(new User(CurrentUser.Username, CurrentUser.Password, false));
-            CurrentUser = new User(string.Empty, string.Empty);
+            CurrentUser.IsLoggedIn = false;
+            repository.Update(CurrentUser);
+            CurrentUser = null;
         }
     }
 }

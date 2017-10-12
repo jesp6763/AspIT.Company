@@ -19,7 +19,7 @@ namespace AspIT.Company.Common.Entities
         /// <summary>
         /// Gets or sets the logged in state
         /// </summary>
-        public bool IsLoggedIn { get; }
+        public bool IsLoggedIn { get; set; }
 
 
         public User(string username, string password)
