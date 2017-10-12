@@ -21,6 +21,7 @@ namespace AspIT.Company.Server
         {
             Console.WriteLine($"Server name: {server.Name}");
             Console.WriteLine($"Server ip: {server.LocalEndpoint}");
+            Console.WriteLine("Log:");
         }
     }
 }
