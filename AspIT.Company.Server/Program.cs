@@ -33,12 +33,13 @@ namespace AspIT.Company.Server
             {
                 // TODO: Refactor commands
                 // Commands
-                switch(Console.ReadLine())
+                switch(Console.ReadLine().ToLower())
                 {
-                    case "Force Log":
+                    case "force log":
+                        LogHelper.AddLog("Log created.", true);
                         Log.Create();
                         break;
-                    case "Close":
+                    case "close":
                         closeServer = true;
                         break;
                 }
