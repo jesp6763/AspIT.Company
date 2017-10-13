@@ -3,60 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
+using AspIT.Company.Common.Logging;
 
 namespace AspIT.Company.Server
 {
     class Program
     {
+        private static Server server;
+
         static void Main(string[] args)
         {
-            Server server = new Server("Test Server", IPAddress.Parse("127.0.0.1"), 27013, true);
+            server = new Server("Test Server", IPAddress.Parse("127.0.0.1"), 27013, true);
             PrintServerInformation(server);
+            server.ListenForTcpClients();
+            // Subscribe to server events
+            server.ClientConnected += Server_ClientConnected;
 
-            // Buffer for reading data
-            byte[] bytes = new byte[1024];
-            string data;
 
-            //Enter the listening loop
-            while(true)
-            {
-                // Perform a blocking call to accept requests.
-                // You could also user server.AcceptSocket() here.
-                TcpClient client = server.AcceptTcpClient();
-                Console.WriteLine($"Client from address {client.Client.RemoteEndPoint} connected");
+            Console.ReadKey();
+            Log.AddLog(new Log.LogData("Server closed"));
+            Log.Create(); // Generate log file
+        }
 
-                // Get a stream object for reading and writing
-                NetworkStream stream = client.GetStream();
-
-                int i;
-
-                // Loop to receive all the data sent by the client.
-                i = stream.Read(bytes, 0, bytes.Length);
-
-                while(i != 0)
-                {
-                    // Translate data bytes to a ASCII string.
-                    data = Encoding.ASCII.GetString(bytes, 0, i);
-                    Console.WriteLine(String.Format("Received: {0}", data));
-
-                    // Process the data sent by the client.
-                    data = data.ToUpper();
-
-                    byte[] msg = Encoding.ASCII.GetBytes(data);
-
-                    // Send back a response.
-                    stream.Write(msg, 0, msg.Length);
-                    Console.WriteLine(String.Format("Sent: {0}", data));
-
-                    i = stream.Read(bytes, 0, bytes.Length);
-
-                }
-
-                // Shutdown and end connection
-                client.Close();
-            }
+        private static void Server_ClientConnected(object sender, TcpClient client)
+        {
+            Console.WriteLine($"Client connected from {client.Client.RemoteEndPoint}");
+            server.ListenForTcpClients();
         }
 
         private static void PrintServerInformation(Server server)
