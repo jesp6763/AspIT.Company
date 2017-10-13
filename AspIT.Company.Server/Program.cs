@@ -28,7 +28,7 @@ namespace AspIT.Company.Server
             // Subscribe to server events
             server.ClientConnected += Server_ClientConnected;
 
-            bool closeServer = false;
+            bool closeServer = server == null;
             while(!closeServer)
             {
                 // TODO: Refactor commands
@@ -102,7 +102,15 @@ namespace AspIT.Company.Server
                     }
                 }
 
-                server = new Server(serverName, ipAddress, port, true);
+                try
+                {
+                    server = new Server(serverName, ipAddress, port, true);
+                }
+                catch(Exception e) when (e.GetType() == typeof(SocketException))
+                {
+                    LogHelper.AddLog(e.Message);
+                    PrepareServerClose();
+                }
             }
         }
     }
