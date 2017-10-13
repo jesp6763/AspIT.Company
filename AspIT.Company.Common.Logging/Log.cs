@@ -60,6 +60,32 @@ namespace AspIT.Company.Common.Logging
             File.WriteAllText(Path.Combine(path, $"{DateTime.Now.ToShortDateString()} log.txt"), stringBuilder.ToString());
         }
 
+        /// <summary>
+        /// Generates a log file
+        /// </summary>
+        /// <param name="filename">The path with filename and extension</param>
+        public static void Create(string filename)
+        {
+            if(logs.Count == 0)
+            {
+                return;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach(LogData log in logs)
+            {
+                stringBuilder.AppendLine($"[{log.DateTime.ToShortDateString()} {log.DateTime.ToLongTimeString()}]: {log.Message}");
+            }
+
+            if(!Directory.Exists(filename))
+            {
+                Directory.CreateDirectory(filename);
+            }
+
+            File.WriteAllText(filename, stringBuilder.ToString());
+        }
+
         public static void AddLog(LogData logData)
         {
             logs.Add(logData);
