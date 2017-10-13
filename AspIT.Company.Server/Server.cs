@@ -88,7 +88,7 @@ namespace AspIT.Company.Server
             using(TcpClient client = server.EndAcceptTcpClient(asyncResult))
             {
                 OnClientConnected(client);
-                Log.AddLog(new Log.LogData($"Client connected from {client.Client.LocalEndPoint}"));
+                Log.AddLog(new Log.LogData($"Client connected from {client.Client.RemoteEndPoint}"));
             }
 
             /*
