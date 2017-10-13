@@ -31,6 +31,7 @@ namespace AspIT.Company.Server
             bool closeServer = false;
             while(!closeServer)
             {
+                // TODO: Refactor commands
                 // Commands
                 switch(Console.ReadLine())
                 {
