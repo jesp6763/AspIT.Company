@@ -17,27 +17,30 @@ namespace AspIT.Company.Server
         {
             if(!File.Exists("Server.cfg"))
             {
-                Log.AddLog(new Log.LogData("Could not find the config file Server.cfg"));
+                LogHelper.AddLog("Could not find the config file Server.cfg", false);
                 Log.Create();
                 return;
             }
-
-            bool closeServer = false;
-
-            // Read server.cfg
-            using(StreamReader reader = File.OpenText("Server.cfg"))
-            {
-                reader.ReadLine();
-            }
-            server = new Server("Test Server", IPAddress.Parse("127.0.0.1"), 27013, true);
+            ReadServerConfig();
             PrintServerInformation(server);
+
             server.ListenForTcpClients();
             // Subscribe to server events
             server.ClientConnected += Server_ClientConnected;
 
+            bool closeServer = false;
             while(!closeServer)
             {
                 // Commands
+                switch(Console.ReadLine())
+                {
+                    case "Force Log":
+                        Log.Create();
+                        break;
+                    case "Close":
+                        closeServer = true;
+                        break;
+                }
             }
 
             Log.AddLog(new Log.LogData("Server closed"));
@@ -55,6 +58,45 @@ namespace AspIT.Company.Server
             Console.WriteLine($"Server name: {server.Name}");
             Console.WriteLine($"Server ip: {server.LocalEndpoint}");
             Console.WriteLine("Log:");
+        }
+
+        private static void ReadServerConfig()
+        {
+            // Read server.cfg
+            using(StreamReader reader = File.OpenText("Server.cfg"))
+            {
+                string serverName = string.Empty;
+                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+                int port = 27013;
+
+                while(!reader.EndOfStream)
+                {
+                    string[] splitted = reader.ReadLine().Split('=');
+                    string propertyName = splitted[0];
+                    string propertyValue = splitted[1];
+
+                    switch(propertyName)
+                    {
+                        case "ServerName":
+                            serverName = propertyValue;
+                            break;
+                        case "IPAdress":
+                            if(IPAddress.TryParse(propertyValue, out ipAddress))
+                            {
+                                LogHelper.AddLog($"Failed to read ip address. Using default ip address: {ipAddress.ToString()}");
+                            }
+                            break;
+                        case "Port":
+                            if(!int.TryParse(propertyValue, out port))
+                            {
+                                LogHelper.AddLog($"Failed to read port. Using default port: {port}");
+                            }
+                            break;
+                    }
+                }
+
+                server = new Server(serverName, ipAddress, port, true);
+            }
         }
     }
 }
