@@ -79,10 +79,10 @@ namespace AspIT.Company.Server
         #region Methods
         public void ListenForTcpClients()
         {
-            BeginAcceptTcpClient(WaitForConnectingUser, this);
+            BeginAcceptTcpClient(ProcessClient, this);
         }
 
-        private void WaitForConnectingUser(IAsyncResult asyncResult)
+        private void ProcessClient(IAsyncResult asyncResult)
         {
             Server server = asyncResult.AsyncState as Server;
             using(TcpClient client = server.EndAcceptTcpClient(asyncResult))
@@ -120,10 +120,7 @@ namespace AspIT.Company.Server
 
                 i = stream.Read(bytes, 0, bytes.Length);
 
-            }
-
-            // Shutdown and end connection
-            client.Close();*/
+            }*/
         }
         #endregion
     }
