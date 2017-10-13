@@ -33,14 +33,14 @@ namespace AspIT.Company.Clients.Communications
                 return LoginResult.WrongUsernameOrPassword;
             }
 
-            if (ConnectionHandler.TestServerConnection() == ConnectionResult.ConnectionRefused)
-            {
-                return LoginResult.ServerRefusedClient;
-            }
-
             if(dbUser.IsLoggedIn)
             {
                 return LoginResult.UserAlreadyLoggedIn;
+            }
+
+            if (ConnectionHandler.TestServerConnection() == ConnectionResult.ConnectionRefused)
+            {
+                return LoginResult.ServerRefusedClient;
             }
 
             dbUser.IsLoggedIn = true;
