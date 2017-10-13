@@ -9,9 +9,13 @@ namespace AspIT.Company.Server
 {
     public static class LogHelper
     {
-        public static void AddLog(string message)
+        public static void AddLog(string message, bool printToConsole = true)
         {
-            Console.WriteLine(message);
+            if(printToConsole)
+            {
+                Console.WriteLine(message);
+            }
+
             Log.AddLog(new Log.LogData(message));
         }
     }
