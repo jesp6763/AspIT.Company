@@ -17,8 +17,8 @@ namespace AspIT.Company.Server
         {
             if(!File.Exists("Server.cfg"))
             {
-                LogHelper.AddLog("Could not find the config file Server.cfg", false);
-                Log.Create();
+                LogHelper.AddLog("Could not find config file Server.cfg", false);
+                PrepareServerClose();
                 return;
             }
             ReadServerConfig();
@@ -44,8 +44,7 @@ namespace AspIT.Company.Server
                 }
             }
 
-            Log.AddLog(new Log.LogData("Server closed"));
-            Log.Create(); // Generate log file
+            PrepareServerClose();
         }
 
         private static void Server_ClientConnected(object sender, TcpClient client)
@@ -59,6 +58,12 @@ namespace AspIT.Company.Server
             Console.WriteLine($"Server name: {server.Name}");
             Console.WriteLine($"Server ip: {server.LocalEndpoint}");
             Console.WriteLine("Log:");
+        }
+
+        private static void PrepareServerClose()
+        {
+            Log.AddLog(new Log.LogData("Server closed"));
+            Log.Create(); // Generate log file
         }
 
         private static void ReadServerConfig()
