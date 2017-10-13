@@ -32,27 +32,32 @@ namespace AspIT.Company.Common.Logging
             public string Message { get; }
         }
 
-        private static List<LogData> logs;
+        private static List<LogData> logs = new List<LogData>();
 
         /// <summary>
         /// Generates a log file
         /// </summary>
         public static void Create()
         {
+            if(logs.Count == 0)
+            {
+                return;
+            }
+
             string path = "Logs";
             StringBuilder stringBuilder = new StringBuilder();
 
             foreach(LogData log in logs)
             {
-                stringBuilder.AppendLine($"{log.DateTime.ToShortDateString()} {log.DateTime.ToShortTimeString()}: {log.Message}");
+                stringBuilder.AppendLine($"[{log.DateTime.ToShortDateString()} {log.DateTime.ToLongTimeString()}]: {log.Message}");
             }
 
-            if(Directory.Exists(path))
+            if(!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            File.AppendAllText(Path.Combine(path, $"{DateTime.Now.ToString()} logs.txt"), stringBuilder.ToString());
+            File.WriteAllText(Path.Combine(path, $"{DateTime.Now.ToShortDateString()} log.txt"), stringBuilder.ToString());
         }
 
         public static void AddLog(LogData logData)
