@@ -37,6 +37,13 @@ namespace AspIT.Company.Server
                         LogHelper.AddLog("Log created.", true);
                         Log.Create();
                         break;
+                    case "list clients":
+                        LogHelper.AddLog("Connected clients:", true);
+                        for(int i = 0; i < server.ConnectedClients.Count; i++)
+                        {
+                            LogHelper.AddLog(server.ConnectedClients[i].Client.RemoteEndPoint.ToString(), true);
+                        }
+                        break;
                     case "close":
                         closeServer = true;
                         break;
@@ -48,7 +55,7 @@ namespace AspIT.Company.Server
 
         private static void Server_ClientConnected(object sender, TcpClient client)
         {
-            Console.WriteLine($"Client connected from {client.Client.RemoteEndPoint}");
+            LogHelper.AddLog($"Client connected from {client.Client.RemoteEndPoint}");
             server.ListenForTcpClients();
         }
 
