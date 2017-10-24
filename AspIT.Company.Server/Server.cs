@@ -90,37 +90,6 @@ namespace AspIT.Company.Server
                 OnClientConnected(client);
                 Log.AddLog(new Log.LogData($"Client connected from {client.Client.RemoteEndPoint}"));
             }
-
-            /*
-            // Buffer for reading data
-            byte[] bytes = new byte[1024];
-            string data;
-
-            NetworkStream stream = client.GetStream();
-
-            int i;
-
-            // Loop to receive all the data sent by the client.
-            i = stream.Read(bytes, 0, bytes.Length);
-
-            while(i != 0)
-            {
-                // Translate data bytes to a ASCII string.
-                data = Encoding.ASCII.GetString(bytes, 0, i);
-                Console.WriteLine(String.Format("Received: {0}", data));
-
-                // Process the data sent by the client.
-                data = data.ToUpper();
-
-                byte[] msg = Encoding.ASCII.GetBytes(data);
-
-                // Send back a response.
-                stream.Write(msg, 0, msg.Length);
-                Console.WriteLine(String.Format("Sent: {0}", data));
-
-                i = stream.Read(bytes, 0, bytes.Length);
-
-            }*/
         }
         #endregion
     }
