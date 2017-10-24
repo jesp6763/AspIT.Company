@@ -90,6 +90,19 @@ namespace AspIT.Company.Server
             OnClientConnected(client);
             ConnectedClients.Add(client);
         }
+
+        /// <summary>
+        /// Disconnects all clients from the server
+        /// </summary>
+        public void DisconnectAll()
+        {
+            for(int i = 0; i < ConnectedClients.Count; i++)
+            {
+                ConnectedClients[i].Client.Disconnect(false);
+            }
+
+            ConnectedClients.Clear();
+        }
         #endregion
     }
 }
