@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using System.IO;
 using AspIT.Company.Common.Logging;
+using AspIT.Company.Server.Config;
 
 namespace AspIT.Company.Server
 {
@@ -16,6 +16,10 @@ namespace AspIT.Company.Server
         static void Main(string[] args)
         {
             ReadServerConfig();
+            if(server == null)
+            {
+                return;
+            }
             PrintServerInformation(server);
 
             server.ListenForTcpClients();
@@ -58,69 +62,28 @@ namespace AspIT.Company.Server
         private static void PrepareServerClose()
         {
             Log.AddLog(new Log.LogData("Server closed"));
-            Log.Create(); // Generate log file
+            Log.Create();
         }
 
         private static void ReadServerConfig()
         {
-            // Default server settings
-            string serverName = $"Server {new Random().Next(0, 101)}";
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-            int port = 27013;
+            ServerConfig config;
 
-            // Create server with default settings if file doesn't exist
-            if(!File.Exists("Server.cfg"))
+            if(!File.Exists("Configs/ServerConfig.xml"))
             {
-                server = new Server(serverName, new IPEndPoint(ipAddress, port), true);
-
-                // Create config file
-                using(StreamWriter writer = File.CreateText("Server.cfg"))
-                {
-                    writer.WriteLine($"ServerName={serverName}");
-                    writer.WriteLine($"IPAddress={ipAddress}");
-                    writer.WriteLine($"Port={port}");
-                }
-                return;
+                config = new ServerConfig($"Server {new Random().Next(0, 101)}", IPAddress.Parse("127.0.0.1"), 27013);
+                config.Save();
             }
 
-            // Read server.cfg
-            using(StreamReader reader = File.OpenText("Server.cfg"))
+            try
             {
-                while(!reader.EndOfStream)
-                {
-                    string[] splitted = reader.ReadLine().Split('=');
-                    string propertyName = splitted[0];
-                    string propertyValue = splitted[1];
-
-                    switch(propertyName)
-                    {
-                        case "ServerName":
-                            serverName = propertyValue;
-                            break;
-                        case "IPAdress":
-                            if(IPAddress.TryParse(propertyValue, out ipAddress))
-                            {
-                                LogHelper.AddLog($"Failed to read ip address. Using default ip address: {ipAddress.ToString()}");
-                            }
-                            break;
-                        case "Port":
-                            if(!int.TryParse(propertyValue, out port))
-                            {
-                                LogHelper.AddLog($"Failed to read port. Using default port: {port}");
-                            }
-                            break;
-                    }
-                }
-
-                try
-                {
-                    server = new Server(serverName, ipAddress, port, true);
-                }
-                catch(Exception e) when (e.GetType() == typeof(SocketException))
-                {
-                    LogHelper.AddLog(e.Message);
-                    PrepareServerClose();
-                }
+                config = ServerConfig.Load();
+                server = new Server(config.ServerName, config.IPAddress, config.Port, true);
+            }
+            catch(Exception e) when(e.GetType() == typeof(SocketException))
+            {
+                LogHelper.AddLog(e.Message);
+                PrepareServerClose();
             }
         }
     }
