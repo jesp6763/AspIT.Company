@@ -15,12 +15,6 @@ namespace AspIT.Company.Server
 
         static void Main(string[] args)
         {
-            if(!File.Exists("Server.cfg"))
-            {
-                LogHelper.AddLog("Could not find config file Server.cfg", false);
-                PrepareServerClose();
-                return;
-            }
             ReadServerConfig();
             PrintServerInformation(server);
 
@@ -74,9 +68,18 @@ namespace AspIT.Company.Server
             IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int port = 27013;
 
+            // Create server with default settings if file doesn't exist
             if(!File.Exists("Server.cfg"))
             {
                 server = new Server(serverName, new IPEndPoint(ipAddress, port), true);
+
+                // Create config file
+                using(StreamWriter writer = File.CreateText("Server.cfg"))
+                {
+                    writer.WriteLine($"ServerName={serverName}");
+                    writer.WriteLine($"IPAddress={ipAddress}");
+                    writer.WriteLine($"Port={port}");
+                }
                 return;
             }
 
