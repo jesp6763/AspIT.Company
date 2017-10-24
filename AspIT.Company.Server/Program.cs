@@ -69,13 +69,14 @@ namespace AspIT.Company.Server
 
         private static void ReadServerConfig()
         {
-            string serverName = string.Empty;
+            // Default server settings
+            string serverName = $"Server {new Random().Next(0, 101)}";
             IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int port = 27013;
 
             if(!File.Exists("Server.cfg"))
             {
-                server = new Server(serverName, new IPEndPoint(ipAddress, port));
+                server = new Server(serverName, new IPEndPoint(ipAddress, port), true);
                 return;
             }
 
