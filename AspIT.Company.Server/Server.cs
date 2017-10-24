@@ -11,6 +11,8 @@ namespace AspIT.Company.Server
 {
     public class Server : TcpListener
     {
+        private List<TcpClient> connectedClients;
+
         #region Events
         public event EventHandler<TcpClient> ClientConnected;
         protected virtual void OnClientConnected(TcpClient client)
@@ -26,6 +28,7 @@ namespace AspIT.Company.Server
         /// <param name="name">The name of the server. This is only for display</param>
         public Server(string name, IPEndPoint localEP) : base(localEP)
         {
+            connectedClients = new List<TcpClient>();
             Name = name;
         }
 
@@ -34,10 +37,8 @@ namespace AspIT.Company.Server
         /// </summary>
         /// <param name="name">The name of the server. This is only for display</param>
         /// <param name="autoStart">Start server automatically</param>
-        public Server(string name, IPEndPoint localEP, bool autoStart) : base(localEP)
+        public Server(string name, IPEndPoint localEP, bool autoStart) : this(name, localEP)
         {
-            Name = name;
-
             if(autoStart)
             {
                 Start();
@@ -50,6 +51,7 @@ namespace AspIT.Company.Server
         /// <param name="name">The name of the server. This is only for display</param>
         public Server(string name, IPAddress localaddr, int port) : base(localaddr, port)
         {
+            connectedClients = new List<TcpClient>();
             Name = name;
         }
 
@@ -58,10 +60,8 @@ namespace AspIT.Company.Server
         /// </summary>
         /// <param name="name">The name of the server. This is only for display</param>
         /// <param name="autoStart">Start server automatically</param>
-        public Server(string name, IPAddress localaddr, int port, bool autoStart) : base(localaddr, port)
+        public Server(string name, IPAddress localaddr, int port, bool autoStart) : this(name, localaddr, port)
         {
-            Name = name;
-
             if(autoStart)
             {
                 Start();
@@ -74,6 +74,7 @@ namespace AspIT.Company.Server
         /// Gets or sets the display name of the server
         /// </summary>
         public string Name { get; set; }
+        public List<TcpClient> ConnectedClients { get => connectedClients; }
         #endregion
 
         #region Methods
@@ -85,11 +86,9 @@ namespace AspIT.Company.Server
         private void ProcessClient(IAsyncResult asyncResult)
         {
             Server server = asyncResult.AsyncState as Server;
-            using(TcpClient client = server.EndAcceptTcpClient(asyncResult))
-            {
-                OnClientConnected(client);
-                Log.AddLog(new Log.LogData($"Client connected from {client.Client.RemoteEndPoint}"));
-            }
+            TcpClient client = server.EndAcceptTcpClient(asyncResult);
+            OnClientConnected(client);
+            ConnectedClients.Add(client);
         }
         #endregion
     }
