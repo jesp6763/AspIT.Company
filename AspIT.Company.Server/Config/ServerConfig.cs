@@ -10,8 +10,22 @@ namespace AspIT.Company.Server.Config
     /// <summary>
     /// Represents a server configuration
     /// </summary>
-    public class ServerConfig
+    public class ServerConfig : Config<ServerConfig>
     {
+        private string serverName;
+        private IPAddress ipAddress;
+        private int port;
+
+        /// <summary>
+        /// Initializes a new instance of the ServerConfig class with default settings
+        /// </summary>
+        public ServerConfig()
+        {
+            ServerName = $"Server {new Random().Next(0, 101)}";
+            IPAddress = IPAddress.Parse("127.0.0.1");
+            Port = 27013;
+        }
+
         /// <summary>
         /// Initializes a new instance of the ServerConfig class
         /// </summary>
@@ -28,55 +42,24 @@ namespace AspIT.Company.Server.Config
         /// <summary>
         /// Gets or sets the server name
         /// </summary>
-        public string ServerName { get; set; }
+        public string ServerName { get => serverName; set => serverName = value; }
         /// <summary>
         /// Gets or sets the ip address
         /// </summary>
-        public IPAddress IPAddress { get; set; }
+        [XmlIgnore]
+        public IPAddress IPAddress { get => ipAddress; set => ipAddress = value; }
+        [XmlElement("IPAddress")]
+        public string IPAddressForXML
+        {
+            get { return IPAddress.ToString(); }
+            set
+            {
+                IPAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value);
+            }
+        }
         /// <summary>
         /// Gets or sets the port
         /// </summary>
-        public int Port { get; set; }
-
-        /// <summary>
-        /// Loads a server configuration
-        /// </summary>
-        /// <returns>A server configuration</returns>
-        public static ServerConfig Load()
-        {
-            string path = "Configs/ServerConfig.xml";
-
-            if(!File.Exists(path))
-            {
-                LogHelper.AddLog("Server config does not exist.");
-                return null;
-            }
-
-            using(FileStream stream = new FileStream(path, FileMode.Open))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(ServerConfig));
-                return serializer.Deserialize(stream) as ServerConfig;
-            }
-        }
-
-        /// <summary>
-        /// Saves the server configuration
-        /// </summary>
-        /// <param name="path">Where to save the server configuration</param>
-        public void Save()
-        {
-            string path = "Configs";
-
-            if(!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            using(FileStream stream = new FileStream(Path.Combine(path, "ServerConfig.xml"), FileMode.Create))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(ServerConfig));
-                serializer.Serialize(stream, this);
-            }
-        }
+        public int Port { get => port; set => port = value; }
     }
 }
