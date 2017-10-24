@@ -69,13 +69,19 @@ namespace AspIT.Company.Server
 
         private static void ReadServerConfig()
         {
+            string serverName = string.Empty;
+            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+            int port = 27013;
+
+            if(!File.Exists("Server.cfg"))
+            {
+                server = new Server(serverName, new IPEndPoint(ipAddress, port));
+                return;
+            }
+
             // Read server.cfg
             using(StreamReader reader = File.OpenText("Server.cfg"))
             {
-                string serverName = string.Empty;
-                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-                int port = 27013;
-
                 while(!reader.EndOfStream)
                 {
                     string[] splitted = reader.ReadLine().Split('=');
