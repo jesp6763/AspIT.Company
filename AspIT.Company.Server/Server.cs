@@ -73,8 +73,9 @@ namespace AspIT.Company.Server
         /// <summary>
         /// Gets or sets the display name of the server
         /// </summary>
-        public string Name { get; set; }
-        public List<TcpClient> ConnectedClients { get => connectedClients; }
+        public string Name { get; }
+        public List<TcpClient> ConnectedClients => connectedClients;
+
         #endregion
 
         #region Methods
@@ -91,6 +92,12 @@ namespace AspIT.Company.Server
             ConnectedClients.Add(client);
         }
 
+        public void Shutdown()
+        {
+            LogHelper.AddLog("Server closed", false);
+            Log.Create();
+        }
+
         /// <summary>
         /// Disconnects all clients from the server
         /// </summary>
@@ -102,6 +109,14 @@ namespace AspIT.Company.Server
             }
 
             ConnectedClients.Clear();
+        }
+
+        /// <summary>
+        /// Disconnects a client
+        /// </summary>
+        public void DisconnectClient(Socket clientSocket)
+        {
+            clientSocket.Disconnect(false);
         }
         #endregion
     }
