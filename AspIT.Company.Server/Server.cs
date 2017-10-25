@@ -124,7 +124,6 @@ namespace AspIT.Company.Server
             client.Client.Disconnect(false);
             if (!client.Connected)
             {
-                LogHelper.AddLog($"Client {client.Client.RemoteEndPoint} disconnected from server");
                 OnClientDisconnected(client);
                 ConnectedClients.Remove(client);
                 client.Dispose();
