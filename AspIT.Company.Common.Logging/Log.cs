@@ -49,7 +49,7 @@ namespace AspIT.Company.Common.Logging
 
             foreach(LogData log in logs)
             {
-                stringBuilder.AppendLine($"[{log.DateTime.ToShortDateString()} {log.DateTime.ToLongTimeString()}]: {log.Message}");
+                stringBuilder.AppendLine($"[{log.DateTime.ToLongTimeString()}]: {log.Message}");
             }
 
             if(!Directory.Exists(path))
@@ -57,7 +57,7 @@ namespace AspIT.Company.Common.Logging
                 Directory.CreateDirectory(path);
             }
 
-            File.WriteAllText(Path.Combine(path, $"{DateTime.Now.ToShortDateString()} log.txt"), stringBuilder.ToString());
+            File.WriteAllText(Path.Combine(path, $"{DateTime.Now:dd-MM-yyyy HH.mm.ss} log.txt"), stringBuilder.ToString());
         }
 
         /// <summary>
