@@ -22,7 +22,7 @@ namespace AspIT.Company.Server
                 return;
             }
 
-            PrintServerInformation(server);
+            PrintServerInformation();
 
             server.ListenForTcpClients();
             // Subscribe to server events
@@ -61,7 +61,7 @@ namespace AspIT.Company.Server
             server.ListenForTcpClients();
         }
 
-        private static void PrintServerInformation(Server server)
+        private static void PrintServerInformation()
         {
             Console.WriteLine($"Server name: {server.Name}");
             Console.WriteLine($"Server ip: {server.LocalEndpoint}");
