@@ -7,13 +7,13 @@ namespace AspIT.Company.Server.DataAccess.Repositories
     public class UserRepository : Repository
     {
         /// <summary>
-        /// Finds a user by username
+        /// Attempts to find user
         /// </summary>
         /// <param name="user">The user to find</param>
-        /// <returns></returns>
-        public User Find(User user)
+        /// <returns>The found user, or null if none were found</returns>
+        public User AttemptFind(User user)
         {
-            User result = user;
+            User result = null;
             DataSet dataSet = executor.Execute($"SELECT * FROM dbo.Users WHERE Username='{user.Username}'");
             if(dataSet.Tables.Count > 0)
             {
@@ -30,6 +30,10 @@ namespace AspIT.Company.Server.DataAccess.Repositories
             return result;
         }
 
+        /// <summary>
+        /// Updates the user
+        /// </summary>
+        /// <param name="user">The user to update</param>
         public void Update(User user)
         {
             executor.Execute($"UPDATE dbo.Users SET Username = '{user.Username}', Password = '{user.Password}', IsLoggedIn = {(user.IsLoggedIn ? 1 : 0)} WHERE Username='{user.Username}'");
