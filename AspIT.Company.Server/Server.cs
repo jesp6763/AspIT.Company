@@ -15,9 +15,14 @@ namespace AspIT.Company.Server
 
         #region Events
         public event EventHandler<TcpClient> ClientConnected;
-        protected virtual void OnClientConnected(TcpClient client)
+        public event EventHandler<TcpClient> ClientDisconnected;
+        private void OnClientConnected(TcpClient client)
         {
             ClientConnected?.Invoke(this, client);
+        }
+        private void OnClientDisconnected(TcpClient client)
+        {
+            ClientDisconnected?.Invoke(this, client);
         }
         #endregion
 
@@ -101,11 +106,11 @@ namespace AspIT.Company.Server
         /// <summary>
         /// Disconnects all clients from the server
         /// </summary>
-        public void DisconnectAll()
+        public void DisconnectAllClients()
         {
             for(int i = 0; i < ConnectedClients.Count; i++)
             {
-                ConnectedClients[i].Client.Disconnect(false);
+                DisconnectClient(ConnectedClients[i]);
             }
 
             ConnectedClients.Clear();
@@ -114,9 +119,16 @@ namespace AspIT.Company.Server
         /// <summary>
         /// Disconnects a client
         /// </summary>
-        public void DisconnectClient(Socket clientSocket)
+        public void DisconnectClient(TcpClient client)
         {
-            clientSocket.Disconnect(false);
+            client.Client.Disconnect(false);
+            if (!client.Connected)
+            {
+                LogHelper.AddLog($"Client {client.Client.RemoteEndPoint} disconnected from server");
+                OnClientDisconnected(client);
+                ConnectedClients.Remove(client);
+                client.Dispose();
+            }
         }
         #endregion
     }
