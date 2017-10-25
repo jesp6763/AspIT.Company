@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
@@ -27,6 +25,7 @@ namespace AspIT.Company.Server
             server.ListenForTcpClients();
             // Subscribe to server events
             server.ClientConnected += Server_ClientConnected;
+            server.ClientDisconnected += Server_ClientDisconnected;
 
             bool closeServer = server == null;
             while(!closeServer)
@@ -53,6 +52,11 @@ namespace AspIT.Company.Server
             }
 
             server.Shutdown();
+        }
+
+        private static void Server_ClientDisconnected(object sender, TcpClient client)
+        {
+            LogHelper.AddLog($"Client {client.Client.RemoteEndPoint} disconnected from server");
         }
 
         private static void Server_ClientConnected(object sender, TcpClient client)
