@@ -15,11 +15,13 @@ namespace AspIT.Company.Server
 
         static void Main(string[] args)
         {
-            ReadServerConfig();
+            LoadServerConfig();
             if(server == null)
             {
+                LogHelper.AddLog("Server could not be loaded.", false);
                 return;
             }
+
             PrintServerInformation(server);
 
             server.ListenForTcpClients();
@@ -34,14 +36,14 @@ namespace AspIT.Company.Server
                 switch(Console.ReadLine().ToLower())
                 {
                     case "force log":
-                        LogHelper.AddLog("Log created.", true);
+                        LogHelper.AddLog("Log created.");
                         Log.Create();
                         break;
                     case "list clients":
-                        LogHelper.AddLog("Connected clients:", true);
+                        LogHelper.AddLog("Connected clients:");
                         for(int i = 0; i < server.ConnectedClients.Count; i++)
                         {
-                            LogHelper.AddLog(server.ConnectedClients[i].Client.RemoteEndPoint.ToString(), true);
+                            LogHelper.AddLog(server.ConnectedClients[i].Client.RemoteEndPoint.ToString());
                         }
                         break;
                     case "close":
@@ -50,7 +52,7 @@ namespace AspIT.Company.Server
                 }
             }
 
-            PrepareServerClose();
+            server.Shutdown();
         }
 
         private static void Server_ClientConnected(object sender, TcpClient client)
@@ -66,13 +68,7 @@ namespace AspIT.Company.Server
             Console.WriteLine("Log:");
         }
 
-        private static void PrepareServerClose()
-        {
-            Log.AddLog(new Log.LogData("Server closed"));
-            Log.Create();
-        }
-
-        private static void ReadServerConfig()
+        private static void LoadServerConfig()
         {
             ServerConfig config;
 
@@ -90,7 +86,7 @@ namespace AspIT.Company.Server
             catch(Exception e) when(e.GetType() == typeof(SocketException))
             {
                 LogHelper.AddLog(e.Message);
-                PrepareServerClose();
+                server.Shutdown();
             }
         }
     }
