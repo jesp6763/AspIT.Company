@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using AspIT.Company.Common.Logging;
@@ -95,6 +96,26 @@ namespace AspIT.Company.Server
             TcpClient client = server.EndAcceptTcpClient(asyncResult);
             OnClientConnected(client);
             ConnectedClients.Add(client);
+        }
+
+        /// <summary>
+        /// Retreives the client's sent object
+        /// </summary>
+        /// <param name="client">The client to retreive the object from</param>
+        public object GetClientData(TcpClient client)
+        {
+            using (NetworkStream stream = client.GetStream())
+            {
+                if (!stream.DataAvailable)
+                {
+                    LogHelper.AddLog("Client has no data available.");
+                    return null;
+                }
+
+                BinaryFormatter formatter = new BinaryFormatter();
+                object sentObject = formatter.Deserialize(stream);
+                return sentObject;
+            }
         }
 
         public void Shutdown()
