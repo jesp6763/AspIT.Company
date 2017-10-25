@@ -21,7 +21,7 @@ namespace AspIT.Company.Clients.Communications
         {
             // Check user details
             UserRepository repository = new UserRepository();
-            User dbUser = repository.Find(user);
+            User dbUser = repository.AttemptFind(user);
 
             if(dbUser == null)
             {
