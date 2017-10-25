@@ -8,9 +8,9 @@ namespace AspIT.Company.Server.Config
     public abstract class Config<Type> where Type : Config<Type>
     {
         /// <summary>
-        /// Loads a server configuration
+        /// Loads a configuration
         /// </summary>
-        /// <returns>A server configuration</returns>
+        /// <returns>A configuration</returns>
         public static Type Load()
         {
             string path = $"Configs/{typeof(Type).Name}.xml";
@@ -29,9 +29,9 @@ namespace AspIT.Company.Server.Config
         }
 
         /// <summary>
-        /// Loads a server configuration
+        /// Loads a configuration
         /// </summary>
-        /// <returns>A server configuration</returns>
+        /// <returns>A configuration</returns>
         public static Type Load(string filePath)
         {
             if(!File.Exists(filePath))
@@ -50,7 +50,6 @@ namespace AspIT.Company.Server.Config
         /// <summary>
         /// Saves the configuration with the name as the class name
         /// </summary>
-        /// <param name="path">Where to save the configuration</param>
         public void Save()
         {
             string path = "Configs";
