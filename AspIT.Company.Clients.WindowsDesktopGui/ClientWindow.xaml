@@ -10,5 +10,6 @@
     <Grid>
         <Label x:Name="loggedInUser" Content="{Binding Source={x:Static communications:LoginHandler.CurrentUser}, Path=Username}" ContentStringFormat="Logged in as {0}" HorizontalAlignment="Left" Margin="10,0,0,7" Foreground="White" Height="25" VerticalAlignment="Bottom" Width="199"/>
         <Button x:Name="logoutBtn" Content="Log out" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" Foreground="White" Background="#FF3697CF" BorderThickness="0" Click="LogoutBtn_Click"/>
+        <Button x:Name="sendUserBtn" Content="Send" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" Foreground="White" Background="#FF3697CF" BorderThickness="0" Click="SendUserBtn_Click"/>
     </Grid>
 </Window>
