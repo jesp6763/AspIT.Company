@@ -24,6 +24,7 @@ namespace AspIT.Company.Server.DataAccess.Repositories
                     user.Username = row.Field<string>("Username");
                     user.Password = row.Field<string>("Password");
                     user.IsLoggedIn = row.Field<bool>("IsLoggedIn");
+                    result = user;
                 }
             }
 
