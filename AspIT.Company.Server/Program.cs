@@ -2,8 +2,10 @@
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Linq;
 using AspIT.Company.Common.Logging;
 using AspIT.Company.Server.Config;
+using AspIT.Company.Common.Entities;
 
 namespace AspIT.Company.Server
 {
@@ -65,6 +67,8 @@ namespace AspIT.Company.Server
         /// <returns>A boolean that indicates if the command is valid, invalid or failed to execute</returns>
         private static bool ExecuteCommand(string cmd)
         {
+            TcpClient client = server.ConnectedClients.ElementAt(0).Key;
+
             switch(cmd.ToLower())
             {
                 case "force log":
@@ -75,8 +79,19 @@ namespace AspIT.Company.Server
                     LogHelper.AddLog("Connected clients:");
                     for(int i = 0; i < server.ConnectedClients.Count; i++)
                     {
-                        LogHelper.AddLog(server.ConnectedClients[i].Client.RemoteEndPoint.ToString());
+                        client = server.ConnectedClients.ElementAt(i).Key;
+                        LogHelper.AddLog(client.Client.RemoteEndPoint.ToString());
                     }
+                    return true;
+                case "getcl data":
+                    User user = server.ConnectedClients[client][0] as User;
+                    if(user != null)
+                    {
+                        Console.WriteLine($"{client.Client.RemoteEndPoint} Username: {user.Username}");
+                    }
+                    return true;
+                case "disconnect all":
+                    server.DisconnectAllClients();
                     return true;
                 default:
                     Console.WriteLine("Invalid command");
