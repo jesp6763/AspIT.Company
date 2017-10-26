@@ -9,18 +9,23 @@ namespace AspIT.Company.Clients.Communications
 {
     public static class ConnectionHandler
     {
-        public static ConnectionResult TestServerConnection()
+        // TEST
+        public static TcpClient CurrentConnection { get; set; }
+
+        /// <summary>
+        /// Connects a client to the server
+        /// </summary>
+        /// <returns>The result of the connection</returns>
+        public static ConnectionResult ConnectToServer()
         {
             try
             {
-                using (new TcpClient("127.0.0.1", 27013))
-                {
-                    return ConnectionResult.ConnectionSuccess;
-                }
+                CurrentConnection = new TcpClient("127.0.0.1", 27013);
+                return ConnectionResult.ConnectionSuccess;
             }
             catch (Exception e) when (e.GetType() == typeof(SocketException))
             {
-                return ConnectionResult.ConnectionRefused;
+                return ConnectionResult.ConnectionFailed;
                 //return ConnectionResult.UnknownError;
             }
         }
