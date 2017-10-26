@@ -32,22 +32,15 @@ namespace AspIT.Company.Server
             {
                 // TODO: Refactor commands
                 // Commands
-                switch(Console.ReadLine().ToLower())
+                string input = Console.ReadLine();
+                if(!ExecuteCommand(input))
                 {
-                    case "force log":
-                        LogHelper.AddLog("Log created.");
-                        Log.Create();
-                        break;
-                    case "list clients":
-                        LogHelper.AddLog("Connected clients:");
-                        for(int i = 0; i < server.ConnectedClients.Count; i++)
-                        {
-                            LogHelper.AddLog(server.ConnectedClients[i].Client.RemoteEndPoint.ToString());
-                        }
-                        break;
-                    case "close":
-                        closeServer = true;
-                        break;
+                    switch(input.ToLower())
+                    {
+                        case "close":
+                            closeServer = true;
+                            break;
+                    }
                 }
             }
 
@@ -63,6 +56,32 @@ namespace AspIT.Company.Server
         {
             LogHelper.AddLog($"Client connected from {client.Client.RemoteEndPoint}");
             server.ListenForTcpClients();
+        }
+
+        /// <summary>
+        /// Executes a command
+        /// </summary>
+        /// <param name="cmd">The command</param>
+        /// <returns>A boolean that indicates if the command is valid, invalid or failed to execute</returns>
+        private static bool ExecuteCommand(string cmd)
+        {
+            switch(cmd.ToLower())
+            {
+                case "force log":
+                    LogHelper.AddLog("Log created.");
+                    Log.Create();
+                    return true;
+                case "list clients":
+                    LogHelper.AddLog("Connected clients:");
+                    for(int i = 0; i < server.ConnectedClients.Count; i++)
+                    {
+                        LogHelper.AddLog(server.ConnectedClients[i].Client.RemoteEndPoint.ToString());
+                    }
+                    return true;
+                default:
+                    Console.WriteLine("Invalid command");
+                    return false;
+            }
         }
 
         private static void PrintServerInformation()
