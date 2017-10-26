@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AspIT.Company.Common.Entities\Entities.csproj">
+      <Project>{6f1a6771-308e-4a8f-aafa-43f6f7ded590}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AspIT.Company.Common.Logging\Logging.csproj">
       <Project>{ec773bfc-585c-4f72-be44-410f50ade44c}</Project>
       <Name>Logging</Name>
