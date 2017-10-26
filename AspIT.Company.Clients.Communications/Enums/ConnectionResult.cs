@@ -3,7 +3,7 @@
     public enum ConnectionResult
     {
         ConnectionSuccess,
-        ConnectionRefused,
+        ConnectionFailed,
         UnknownError
     }
 }
