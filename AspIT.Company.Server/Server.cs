@@ -106,6 +106,23 @@ namespace AspIT.Company.Server
         }
 
         /// <summary>
+        /// Starts looking for incoming data that is sent from clients
+        /// </summary>
+        public void BeginLookingForData()
+        {
+            byte[] buffer = new byte[256];
+            Server.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ProcessClientData, this);
+        }
+
+        /// <summary>
+        /// Processes a client's data
+        /// </summary>
+        private void ProcessClientData(IAsyncResult asyncResult)
+        {
+
+        }
+
+        /// <summary>
         /// Retreives the client's sent object
         /// </summary>
         /// <param name="client">The client to retreive the object from</param>
