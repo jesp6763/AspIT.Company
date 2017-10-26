@@ -7,12 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using AspIT.Company.Common.Logging;
+using AspIT.Company.Common.Entities;
 
 namespace AspIT.Company.Server
 {
     public class Server : TcpListener
     {
-        private List<TcpClient> connectedClients;
+        private Dictionary<TcpClient, List<object>> connectedClients;
 
         #region Events
         public event EventHandler<TcpClient> ClientConnected;
@@ -34,7 +35,7 @@ namespace AspIT.Company.Server
         /// <param name="name">The name of the server. This is only for display</param>
         public Server(string name, IPEndPoint localEP) : base(localEP)
         {
-            connectedClients = new List<TcpClient>();
+            connectedClients = new Dictionary<TcpClient, List<object>>();
             Name = name;
         }
 
@@ -57,7 +58,7 @@ namespace AspIT.Company.Server
         /// <param name="name">The name of the server. This is only for display</param>
         public Server(string name, IPAddress localaddr, int port) : base(localaddr, port)
         {
-            connectedClients = new List<TcpClient>();
+            connectedClients = new Dictionary<TcpClient, List<object>>();
             Name = name;
         }
 
@@ -80,22 +81,28 @@ namespace AspIT.Company.Server
         /// Gets or sets the display name of the server
         /// </summary>
         public string Name { get; }
-        public List<TcpClient> ConnectedClients => connectedClients;
+        public Dictionary<TcpClient, List<object>> ConnectedClients => connectedClients;
 
         #endregion
 
         #region Methods
+
         public void ListenForTcpClients()
         {
             BeginAcceptTcpClient(ProcessClient, this);
         }
 
+        /// <summary>
+        /// Processes a client to be accepted
+        /// </summary>
+        /// <param name="asyncResult"></param>
         private void ProcessClient(IAsyncResult asyncResult)
         {
             Server server = asyncResult.AsyncState as Server;
             TcpClient client = server.EndAcceptTcpClient(asyncResult);
             OnClientConnected(client);
-            ConnectedClients.Add(client);
+            ConnectedClients.Add(client, new List<object>());
+            ConnectedClients[client].Add(GetClientData(client) as User);
         }
 
         /// <summary>
@@ -104,18 +111,16 @@ namespace AspIT.Company.Server
         /// <param name="client">The client to retreive the object from</param>
         public object GetClientData(TcpClient client)
         {
-            using (NetworkStream stream = client.GetStream())
+            NetworkStream stream = client.GetStream();
+            if(!stream.DataAvailable)
             {
-                if (!stream.DataAvailable)
-                {
-                    LogHelper.AddLog("Client has no data available.");
-                    return null;
-                }
-
-                BinaryFormatter formatter = new BinaryFormatter();
-                object sentObject = formatter.Deserialize(stream);
-                return sentObject;
+                LogHelper.AddLog("Client has no data available.");
+                return null;
             }
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            object sentObject = formatter.Deserialize(stream);
+            return sentObject;
         }
 
         public void Shutdown()
@@ -129,9 +134,9 @@ namespace AspIT.Company.Server
         /// </summary>
         public void DisconnectAllClients()
         {
-            for(int i = 0; i < ConnectedClients.Count; i++)
+            foreach(KeyValuePair<TcpClient, List<object>> client in ConnectedClients)
             {
-                DisconnectClient(ConnectedClients[i]);
+                DisconnectClient(client.Key);
             }
 
             ConnectedClients.Clear();
