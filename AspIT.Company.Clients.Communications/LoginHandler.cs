@@ -38,7 +38,7 @@ namespace AspIT.Company.Clients.Communications
                 return LoginResult.UserAlreadyLoggedIn;
             }
 
-            if (ConnectionHandler.TestServerConnection() == ConnectionResult.ConnectionRefused)
+            if (ConnectionHandler.ConnectToServer() == ConnectionResult.ConnectionFailed)
             {
                 return LoginResult.ServerRefusedClient;
             }
