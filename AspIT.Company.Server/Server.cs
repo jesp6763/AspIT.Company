@@ -103,15 +103,17 @@ namespace AspIT.Company.Server
             OnClientConnected(client);
             ConnectedClients.Add(client, new List<object>());
             ConnectedClients[client].Add(GetClientData(client) as User);
+
+            BeginLookingForData(client.Client);
         }
 
         /// <summary>
-        /// Starts looking for incoming data that is sent from clients
+        /// Starts looking for incoming data that is sent from a client
         /// </summary>
-        public void BeginLookingForData()
+        public void BeginLookingForData(Socket socket)
         {
             byte[] buffer = new byte[256];
-            Server.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ProcessClientData, this);
+            Server.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ProcessClientData, socket);
         }
 
         /// <summary>
