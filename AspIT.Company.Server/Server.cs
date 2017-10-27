@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Drawing;
 using AspIT.Company.Common.Logging;
 using AspIT.Company.Common.Entities;
 
@@ -89,7 +91,7 @@ namespace AspIT.Company.Server
 
         public void ListenForTcpClients()
         {
-            BeginAcceptTcpClient(ProcessClient, this);
+            BeginAcceptTcpClient(ProcessClient, null);
         }
 
         /// <summary>
@@ -98,11 +100,9 @@ namespace AspIT.Company.Server
         /// <param name="asyncResult"></param>
         private void ProcessClient(IAsyncResult asyncResult)
         {
-            Server server = asyncResult.AsyncState as Server;
-            TcpClient client = server.EndAcceptTcpClient(asyncResult);
+            TcpClient client = EndAcceptTcpClient(asyncResult);
             OnClientConnected(client);
             ConnectedClients.Add(client, new List<object>());
-            ConnectedClients[client].Add(GetClientData(client) as User);
 
             BeginLookingForData(client.Client);
         }
@@ -121,7 +121,18 @@ namespace AspIT.Company.Server
         /// </summary>
         private void ProcessClientData(IAsyncResult asyncResult)
         {
+            Socket socket = asyncResult.AsyncState as Socket;
+            int byteCount = socket.EndReceive(asyncResult);
+            //File.WriteAllBytes();
 
+            if(byteCount > 0)
+            {
+                Console.WriteLine(byteCount);
+                /*using(MemoryStream stream = new MemoryStream())
+                {
+
+                }*/
+            }
         }
 
         /// <summary>
