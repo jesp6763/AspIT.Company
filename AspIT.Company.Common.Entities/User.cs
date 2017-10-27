@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace AspIT.Company.Common.Entities
 {
-    //TEST THIS IS JUSt A TEST
-    [Serializable]
     public class User
     {
         /// <summary>
