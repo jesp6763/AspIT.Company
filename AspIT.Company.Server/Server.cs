@@ -15,11 +15,15 @@ namespace AspIT.Company.Server
 {
     public class Server : TcpListener
     {
+        /// <summary>
+        /// Connected clients
+        /// </summary>
         private Dictionary<TcpClient, List<object>> connectedClients;
 
         #region Events
         public event EventHandler<TcpClient> ClientConnected;
         public event EventHandler<TcpClient> ClientDisconnected;
+        public event EventHandler<TcpClient> ClientSentData;
         private void OnClientConnected(TcpClient client)
         {
             ClientConnected?.Invoke(this, client);
@@ -27,6 +31,10 @@ namespace AspIT.Company.Server
         private void OnClientDisconnected(TcpClient client)
         {
             ClientDisconnected?.Invoke(this, client);
+        }
+        private void OnClientSentData(TcpClient client)
+        {
+            ClientSentData?.Invoke(this, client);
         }
         #endregion
 
@@ -83,12 +91,17 @@ namespace AspIT.Company.Server
         /// Gets or sets the display name of the server
         /// </summary>
         public string Name { get; }
+        /// <summary>
+        /// Gets all connected clients
+        /// </summary>
         public Dictionary<TcpClient, List<object>> ConnectedClients => connectedClients;
 
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// Starts listening for incoming connections
+        /// </summary>
         public void ListenForTcpClients()
         {
             BeginAcceptTcpClient(ProcessClient, null);
@@ -104,7 +117,10 @@ namespace AspIT.Company.Server
             OnClientConnected(client);
             ConnectedClients.Add(client, new List<object>());
         }
-
+        
+        /// <summary>
+        /// Shuts down the server
+        /// </summary>
         public void Shutdown()
         {
             LogHelper.AddLog("Server closed", false);
