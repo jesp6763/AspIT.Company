@@ -103,54 +103,9 @@ namespace AspIT.Company.Server
             TcpClient client = EndAcceptTcpClient(asyncResult);
             OnClientConnected(client);
             ConnectedClients.Add(client, new List<object>());
-
-            BeginLookingForData(client.Client);
         }
 
-        /// <summary>
-        /// Starts looking for incoming data that is sent from a client
-        /// </summary>
-        public void BeginLookingForData(Socket socket)
-        {
-            byte[] buffer = new byte[256];
-            Server.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ProcessClientData, socket);
-        }
 
-        /// <summary>
-        /// Processes a client's data
-        /// </summary>
-        private void ProcessClientData(IAsyncResult asyncResult)
-        {
-            Socket socket = asyncResult.AsyncState as Socket;
-            int byteCount = socket.EndReceive(asyncResult);
-
-            if(byteCount > 0)
-            {
-                Console.WriteLine(byteCount);
-                /*using(MemoryStream stream = new MemoryStream())
-                {
-
-                }*/
-            }
-        }
-
-        /// <summary>
-        /// Retreives the client's sent object
-        /// </summary>
-        /// <param name="client">The client to retreive the object from</param>
-        public object GetClientData(TcpClient client)
-        {
-            NetworkStream stream = client.GetStream();
-            if(!stream.DataAvailable)
-            {
-                LogHelper.AddLog("Client has no data available.");
-                return null;
-            }
-
-            BinaryFormatter formatter = new BinaryFormatter();
-            object sentObject = formatter.Deserialize(stream);
-            return sentObject;
-        }
 
         public void Shutdown()
         {
