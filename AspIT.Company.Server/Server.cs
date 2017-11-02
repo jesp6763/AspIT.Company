@@ -123,7 +123,6 @@ namespace AspIT.Company.Server
         {
             Socket socket = asyncResult.AsyncState as Socket;
             int byteCount = socket.EndReceive(asyncResult);
-            //File.WriteAllBytes();
 
             if(byteCount > 0)
             {
