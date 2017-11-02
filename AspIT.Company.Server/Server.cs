@@ -105,8 +105,6 @@ namespace AspIT.Company.Server
             ConnectedClients.Add(client, new List<object>());
         }
 
-
-
         public void Shutdown()
         {
             LogHelper.AddLog("Server closed", false);
